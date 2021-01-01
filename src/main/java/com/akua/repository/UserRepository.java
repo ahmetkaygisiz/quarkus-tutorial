@@ -25,8 +25,7 @@ public class UserRepository {
 
     public List<User> findAll(){
         try {
-            List<User> result = getQueryResults(USERS_FIND_ALL);
-            return result;
+            return getQueryResults(USERS_FIND_ALL);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -36,43 +35,41 @@ public class UserRepository {
 
     public List<User> findById(UUID id) {
         try {
-            List<User> user = getUserById(USERS_FIND_BY_ID, id);
-            return user;
+            return getUserById(USERS_FIND_BY_ID, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public boolean insert(User user) {
+    public int insert(User user) {
         try {
             return executeQueryWithParams(USERS_INSERT, new Object[]{
-                    user.getId(), user.getEmail(), user.getPassword()
-            });
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+                    user.getId(), user.getEmail(), user.getPassword()});
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
-    public boolean update(User user){
+    public int update(User user){
         try {
             return executeQueryWithParams(USERS_UPDATE, new Object[]{
                     user.getEmail(), user.getPassword(), user.getId()
             });
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
-    public boolean deleteById(UUID id){
+    public int deleteById(UUID id){
         try {
             return executeQueryWithParams(USERS_DELETE_BY_ID, new Object[]{ id });
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     public boolean executeQuery(String query) throws SQLException {
@@ -83,9 +80,9 @@ public class UserRepository {
         return isSucceed;
     }
 
-    public boolean executeQueryWithParams(String query, Object[] params) throws SQLException{
+    public int executeQueryWithParams(String query, Object[] params) throws SQLException{
         manager.connect();
-        boolean isSucceed = manager.executePSWithParams(query, params);
+        int isSucceed = manager.executePSWithParams(query, params);
         manager.close();
 
         return isSucceed;

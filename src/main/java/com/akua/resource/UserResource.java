@@ -25,7 +25,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> get(@PathParam("id") UUID id){
         return userRepository.findById(id);
@@ -34,37 +34,37 @@ public class UserResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response post(User user){
-        boolean status = userRepository.insert(new User(UUID.randomUUID(), user.getEmail(), user.getPassword()));
+        int status = userRepository.insert(new User(UUID.randomUUID(), user.getEmail(), user.getPassword()));
 
-        if (status)
+        if (status == 1)
             return new Response("User created!");
         return new Response("Something goes wrong");
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response put(@PathParam("id") UUID id, User user){
         if ( userRepository.findById(id) == null){
             throw new NotFoundException("User not found!");
         }
-        boolean status = userRepository.update(new User(id, user.getEmail(), user.getPassword()));
+        int status = userRepository.update(new User(id, user.getEmail(), user.getPassword()));
 
-        if (status)
+        if (status == 1)
             return new Response("User updated!");
         return new Response("Something goes wrong");
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") UUID id){
         if ( userRepository.findById(id) == null){
             throw new NotFoundException("User not found");
         }
-        boolean status = userRepository.deleteById(id);
+        int status = userRepository.deleteById(id);
 
-        if (status)
+        if (status == 1)
             return new Response("User deleted!");
         return new Response("Something goes wrong");
     }

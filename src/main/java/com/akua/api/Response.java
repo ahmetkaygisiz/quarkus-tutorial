@@ -1,7 +1,5 @@
 package com.akua.api;
 
-import java.io.Serializable;
-
 public class Response {
     String message;
 

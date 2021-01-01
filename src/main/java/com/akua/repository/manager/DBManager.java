@@ -46,9 +46,9 @@ public class DBManager {
         return status;
     }
 
-    public boolean executePSWithParams(String query, Object[] params) throws SQLException {
+    public int executePSWithParams(String query, Object[] params) throws SQLException {
         PreparedStatement ps = getPreparedStatementWithParams(query, params);
-        boolean status = ps.execute();
+        int status = ps.executeUpdate();
         ps.close();
 
         return status;
